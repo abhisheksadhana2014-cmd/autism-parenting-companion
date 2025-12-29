@@ -1,0 +1,609 @@
+# Autism Parenting Companion - MVP Codebase
+
+This is a complete, exportable React + TypeScript + Vite codebase for a warm, offline-first web app designed to support families with autistic children.
+
+## Quick Start
+
+```bash
+# 1. Clone or extract this repo
+cd autism-parenting-companion
+
+# 2. Install dependencies
+npm install
+
+# 3. Run dev server
+npm run dev
+
+# 4. Build for production
+npm run build
+
+# 5. Deploy to Vercel/Netlify
+# See "Deployment" section below
+```
+
+---
+
+## Project Structure
+
+```
+autism-parenting-companion/
+├── public/
+│   ├── manifest.json          # PWA manifest
+│   └── offline.html           # Offline fallback
+├── src/
+│   ├── components/
+│   │   ├── Layout.tsx
+│   │   ├── Navigation.tsx
+│   │   ├── SessionCard.tsx
+│   │   ├── SkillAreaChart.tsx
+│   │   ├── ReframeForm.tsx
+│   │   ├── JournalEntry.tsx
+│   │   └── [other components]
+│   ├── pages/
+│   │   ├── Dashboard.tsx
+│   │   ├── SessionTracker.tsx
+│   │   ├── Assessment.tsx
+│   │   ├── Growth.tsx
+│   │   ├── ReframeJournal.tsx
+│   │   ├── QuickEntry.tsx
+│   │   ├── Resources.tsx
+│   │   └── Settings.tsx
+│   ├── hooks/
+│   │   ├── useStorage.ts
+│   │   ├── useTheme.ts
+│   │   └── useLiveQuery.ts
+│   ├── lib/
+│   │   ├── storage.ts        # localStorage CRUD
+│   │   ├── seedData.ts       # Demo data generator
+│   │   └── validation.ts     # Form validation
+│   ├── types/
+│   │   └── index.ts          # All TypeScript interfaces
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css             # Tailwind imports
+├── sw.ts                      # Service worker (PWA)
+├── vite.config.ts
+├── tsconfig.json
+├── tailwind.config.js
+├── package.json
+├── .gitignore
+└── README.md
+```
+
+---
+
+## Key Features
+
+### ✅ Core Pages
+- **Dashboard** – Today-first overview, weekly charts, goal cards, quick stats
+- **Connection Play Session Tracker** – Session timer, quality scoring, context logging, auto-save
+- **Connection Assessment** – Self-score rubric with supportive tips & trendlines
+- **Growth Targets** – Milestone checklists for 4 Skill Areas, progress visualization
+- **Reframe Journal** – Trigger → Thought → Response → Alternative Thought with pattern insights
+- **Quick Entry (FAB)** – Fast journal entry under 20 seconds
+- **Resources** – Markdown notes, import/export, offline access
+- **Settings** – PIN lock, data export/import, theme toggle, high-contrast mode
+
+### ✅ Tech Stack
+- **React 19** + **TypeScript**
+- **Vite** (fast build, HMR)
+- **Tailwind CSS** (soft color palette, responsive, dark mode)
+- **Recharts** (responsive charts)
+- **React Router** (SPA navigation)
+- **PWA** (offline-first, service worker, manifest)
+- **localStorage** (zero backend, local privacy)
+- **Chart.js / Recharts** for data visualization
+
+### ✅ UX/Accessibility
+- Mobile-first responsive design (bottom nav on mobile, sidebar on desktop)
+- Soft color palette, friendly typography, generous spacing
+- High-contrast mode toggle for accessibility
+- Large tap targets (48px minimum on mobile)
+- Clear labels, ARIA attributes
+- Warm, supportive microcopy ("Small wins count", "You showed up today")
+- Dark/light mode toggle
+
+### ✅ Offline & Privacy
+- **No backend, no server, no tracking**
+- All data stored in localStorage (on-device)
+- Service worker caches app shell + assets
+- PWA installable on mobile (Android + iOS)
+- Local PIN lock (basic security)
+- Full data export/import (backup & restore)
+
+### ✅ Terminology (IP-Safe)
+- "Connection Play Sessions" (not branded terms)
+- "Child-led moments" (not "green lights")
+- "Skill Areas": Shared Attention, Connection Signals, Communication Attempts, Flexibility with Change
+- "Milestones" (not "stages")
+- "Reframe Journal" with original Trigger → Thought → Response → Alternative Thought framework
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+- Node 18+ (recommended 20+)
+- npm or yarn
+
+### Steps
+
+1. **Extract the codebase** and navigate to the directory:
+   ```bash
+   cd autism-parenting-companion
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the dev server:**
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
+
+4. **Test with demo data:**
+   - Go to Settings → Toggle "Show Demo Data"
+   - Dashboard will populate with sample sessions, assessments, journal entries
+
+---
+
+## Development Workflow
+
+### Available Scripts
+
+```bash
+# Development
+npm run dev              # Start Vite dev server (HMR enabled)
+
+# Production
+npm run build           # Build optimized bundle (dist/)
+npm run preview         # Preview production build locally
+
+# Code Quality
+npm run lint            # Run ESLint (optional, if configured)
+npm run format          # Format code with Prettier (optional)
+```
+
+### Development Tips
+
+- **Hot Module Reload (HMR)**: Changes auto-refresh in browser
+- **TypeScript**: Full type safety; check `src/types/index.ts` for all models
+- **Tailwind JIT**: Classes generated on-demand; custom colors in `tailwind.config.js`
+- **Service Worker**: During dev, disable in DevTools to test offline locally
+- **localStorage Debugging**: Open DevTools → Application → Local Storage to inspect saved data
+
+---
+
+## How to Use the App
+
+### 1. Dashboard
+- **Welcome card** with quick action buttons
+- **Weekly/Monthly charts** for 4 Skill Areas (Shared Attention, Connection Signals, Communication Attempts, Flexibility with Change)
+- **Quick stats**: Sessions this week, avg connection score, child-led moments, top triggers
+- **Goal cards**: Set goals, see "On Track" / "Needs Support" indicators
+
+### 2. Connection Play Session Tracker
+1. Tap "Start Session" on Dashboard or from bottom nav
+2. Fill in **date/time, context, activity** (what game/play)
+3. Use **timer** to track session length (start/pause/stop)
+4. Log **child-led moments** count
+5. Rate **connection quality** (1–10)
+6. Add optional **notes**
+7. Tap "Save & Finalize" → stored in localStorage
+8. Export sessions as **CSV/JSON** from Settings
+
+### 3. Connection Assessment
+1. Tap "Assessment" → view self-score rubric (Energy Matching, Imitation, Responsiveness, Warmth)
+2. Score each area 1–5
+3. View **trendline** on Dashboard
+4. Get **"Try this next session"** suggestions + encouragement
+
+### 4. Growth Targets
+1. Tap "Growth" → select a **Skill Area**
+2. Set **current level** → see **next gentle targets**
+3. Check off milestones as child progresses
+4. View **progress chart** on Dashboard
+
+### 5. Reframe Journal
+1. Tap "Journal" or use **Quick Entry (FAB)**
+2. **Trigger**: Describe what happened
+3. **Thought**: What belief/interpretation did you have?
+4. **Response**: Select feeling (dropdown), describe action
+5. **Alternative Thought**: New belief to practice next time
+6. Add **tags** (sensory, transitions, sleep, food, public place, sibling, custom)
+7. Intensity rating (1–5)
+8. Optional **outcome** (improved/same/worse)
+9. View **pattern insights**: recurring tags, top thoughts, repeated patterns
+10. Export as **CSV/JSON**
+
+### 6. Quick Entry (FAB)
+- Floating Action Button (mobile bottom-right)
+- Fast 20-second journal entry
+- Modal with essential fields only
+- Supportive confirmation ("Great job capturing that!")
+
+### 7. Resources
+- Create/edit **Markdown notes** (play ideas, routines, learnings)
+- Import/export notes as **JSON/Markdown**
+- Offline access to all notes
+
+### 8. Settings
+- **PIN Lock**: Set 4-digit PIN to gate app access (off by default)
+- **Export All Data**: Single JSON file with all sessions, assessments, journal, goals, notes
+- **Import Data**: Restore from exported JSON (confirms before overwrite)
+- **Theme**: Light / Dark / High-Contrast modes
+- **Seed Demo Data**: Populate with sample data for screenshots/testing
+
+---
+
+## Deployment
+
+### Vercel (Recommended – Zero-Config)
+
+1. **Push your code to GitHub:**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit: Autism Parenting Companion MVP"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/autism-parenting-companion.git
+   git push -u origin main
+   ```
+
+2. **Go to [Vercel](https://vercel.com)**
+   - Click "New Project"
+   - Select your GitHub repo
+   - Select "React" framework (auto-detected)
+   - Click "Deploy"
+   - Your app is live in ~2 minutes
+
+3. **Environment** (none needed – fully static)
+
+### Netlify
+
+1. **Push to GitHub** (same as above)
+
+2. **Go to [Netlify](https://app.netlify.com)**
+   - Click "Add new site" → "Import an existing project"
+   - Connect GitHub, select repo
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Click "Deploy"
+
+### Docker / Self-Hosted
+
+1. **Build the app:**
+   ```bash
+   npm run build
+   ```
+
+2. **Serve the `dist/` folder** with any static host (nginx, Apache, etc.)
+
+3. **Important for PWA:**
+   - Serve over **HTTPS**
+   - Set correct `Cache-Control` headers (see below)
+
+### Header Configuration (All Hosts)
+
+Add these headers to cache-bust service worker:
+
+```
+# Vercel: vercel.json
+{
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" }
+      ]
+    }
+  ]
+}
+```
+
+```
+# Netlify: netlify.toml
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+```
+
+---
+
+## Data Management
+
+### localStorage Keys (All Data Stored Locally)
+
+- `autismCompanion:sessions` – Connection Play Sessions
+- `autismCompanion:assessments` – Connection Assessments
+- `autismCompanion:journal` – Reframe Journal entries
+- `autismCompanion:goals` – Goal cards
+- `autismCompanion:notes` – Resource Markdown notes
+- `autismCompanion:theme` – Light/dark/high-contrast preference
+- `autismCompanion:pinLock` – PIN lock status & hashed PIN (optional)
+
+### Exporting Data
+
+1. Go to **Settings** → "Export All Data"
+2. Single **JSON file** with all entries + metadata
+3. Save locally as backup
+
+### Importing Data
+
+1. Go to **Settings** → "Import Data"
+2. Select JSON file
+3. Confirm overwrite → all data restored
+4. App reloads automatically
+
+### Clearing Data
+
+1. **Delete single entry**: Use edit/delete buttons on each page
+2. **Clear all**: Settings → "Reset All Data" (with confirmation)
+3. **Browser DevTools**: Application → Local Storage → delete `autismCompanion:*` entries
+
+---
+
+## PIN Lock
+
+### Setting a PIN
+1. Settings → "PIN Lock"
+2. Toggle ON
+3. Enter 4-digit PIN (will hash before storing)
+4. Confirm
+5. On next app load, unlock screen appears
+
+### Removing PIN
+1. Settings → "PIN Lock"
+2. Enter current PIN
+3. Toggle OFF
+4. Confirm
+
+---
+
+## Customization
+
+### Colors & Branding
+Edit `tailwind.config.js`:
+```javascript
+theme: {
+  colors: {
+    // Soft, warm palette (can adjust)
+    primary: '#3b82f6',    // Warm teal
+    secondary: '#f3a28f',  // Soft peach
+    // ... others
+  }
+}
+```
+
+### Copy & Microcopy
+Edit component files and `src/lib/` files for warm, supportive language:
+- Example: "You're doing great!" → "Small wins count"
+- Example: "Session saved" → "Your reflection is safe here"
+
+### Skill Areas
+Edit `src/types/index.ts` → `SkillAreaType`:
+```typescript
+type SkillAreaType = 
+  | 'shared_attention'
+  | 'connection_signals'
+  | 'communication_attempts'
+  | 'flexibility_with_change'
+```
+
+### Modify Charts
+Recharts components in `src/components/SkillAreaChart.tsx`:
+```typescript
+<LineChart data={data}>
+  <CartesianGrid />
+  <XAxis />
+  <YAxis />
+  <Line dataKey="score" />
+</LineChart>
+```
+
+---
+
+## PWA Installation
+
+### Android
+1. Open app in Chrome
+2. Tap **menu (⋮)** → "Install app"
+3. Tap "Install" on prompt
+4. App appears on home screen
+
+### iOS (Web Clip)
+1. Open app in Safari
+2. Tap **Share** → "Add to Home Screen"
+3. Name it → "Add"
+4. App appears on home screen
+
+### Offline Use
+- Install app
+- Close mobile network / WiFi
+- App continues to work (all data in localStorage)
+- Service worker serves cached assets
+
+---
+
+## Type Safety
+
+All TypeScript models are in `src/types/index.ts`:
+
+```typescript
+// Session
+interface ConnectionSession {
+  id: string;
+  date: string;
+  duration: number; // seconds
+  context?: string;
+  activity?: string;
+  notes?: string;
+  childLedMomentsCount: number;
+  connectionQuality: number; // 1-10
+}
+
+// Assessment
+interface ConnectionAssessment {
+  id: string;
+  date: string;
+  energyMatching: number; // 1-5
+  imitation: number;
+  responsiveness: number;
+  warmth: number;
+}
+
+// Journal Entry
+interface ReframeJournalEntry {
+  id: string;
+  date: string;
+  trigger: string;
+  thought: string;
+  response: {
+    feeling: string;
+    action: string;
+  };
+  alternativeThought: string;
+  tags: string[];
+  intensity: number; // 1-5
+  outcome?: 'improved' | 'same' | 'worse';
+}
+
+// Goal
+interface GoalCard {
+  id: string;
+  skillArea: SkillAreaType;
+  title: string;
+  description?: string;
+  targetLevel: number;
+  createdAt: string;
+  status: 'on_track' | 'needs_support';
+}
+
+// Note
+interface ResourceNote {
+  id: string;
+  title: string;
+  content: string; // Markdown
+  createdAt: string;
+}
+```
+
+---
+
+## Accessibility Checklist
+
+- ✅ **WCAG 2.1 Level AA** compliance aim
+- ✅ **Large tap targets**: 48px minimum (mobile)
+- ✅ **Color contrast**: 4.5:1 (normal text), 3:1 (large text)
+- ✅ **Keyboard navigation**: All buttons/links focusable
+- ✅ **ARIA labels**: Form inputs, buttons, icons labeled
+- ✅ **Focus indicators**: Visible outline on focus
+- ✅ **High-contrast mode**: Toggle in Settings
+- ✅ **Dark mode**: Automatic + manual override
+- ✅ **Screen reader friendly**: Semantic HTML, alt text for icons
+- ✅ **No time-dependent interactions**: Forms don't auto-submit
+
+---
+
+## Testing (Optional)
+
+To add unit tests, install vitest:
+```bash
+npm install -D vitest @testing-library/react @testing-library/user-event
+```
+
+Create `vitest.config.ts`:
+```typescript
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+  }
+})
+```
+
+Run tests:
+```bash
+npm run test
+```
+
+---
+
+## Troubleshooting
+
+### Service Worker Not Updating
+- **Solution**: Clear browser cache + DevTools → Application → Service Workers → Unregister
+
+### Data Not Persisting
+- **Solution**: Check localStorage is enabled; inspect DevTools → Application → Local Storage
+
+### PWA Not Installing
+- **Solution**: Ensure deployed over HTTPS; check manifest.json validity at [Web Manifest Validator](https://manifest-validator.appspot.com/)
+
+### High-Contrast Mode Too Dark
+- **Solution**: Edit Tailwind config to adjust color palette
+
+---
+
+## License & IP
+
+This codebase uses **original, generic phrasing** throughout:
+- No branded program names
+- No trademarked method names
+- No copyrighted excerpts from books/courses
+- All terminology is neutral and reusable
+
+You own 100% of the code. Deploy privately, commercially, or share freely.
+
+---
+
+## Support & Roadmap
+
+### Future Enhancements (Post-MVP)
+- Backend sync (optional cloud backup)
+- Multi-device sync (Firebase Realtime DB)
+- Family member invite/collaborate
+- Parent coaching AI chatbot
+- Notifications & reminders
+- Advanced analytics + ML pattern detection
+- Video upload (play session clips)
+- Integration with therapy platforms
+
+### Questions?
+Refer to inline code comments and TypeScript definitions in `src/types/index.ts` and `src/lib/storage.ts` for detailed usage.
+
+---
+
+## Quick Commands
+
+```bash
+npm install          # Install all dependencies
+npm run dev          # Start dev server (http://localhost:5173)
+npm run build        # Build for production (creates dist/)
+npm run preview      # Preview production build
+git init             # Initialize Git repo
+git remote add origin [URL]  # Add GitHub remote
+git push -u origin main      # Push to GitHub
+```
+
+---
+
+## Final Notes
+
+- **No analytics tracking**: App respects privacy completely
+- **No service required**: Works 100% offline on-device
+- **No login needed**: Personal device = personal data
+- **No ads**: Clean, parent-focused experience
+- **Fully customizable**: All code is yours to modify
+
+Deploy with confidence. Your families' data is safe, private, and always under their control.
+
+Happy coding! 💛
